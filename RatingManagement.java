@@ -298,7 +298,80 @@ public class RatingManagement {
 
     // @Requirement 7
     public ArrayList<String> findMoviesMatchLatestMovieOf(int userId, int rating, int k) {
-        /* code here */
-        return null; /* change here */
-    }
+        ArrayList<String> result = new ArrayList<>();
+
+        // 1️⃣ Lấy user gốc
+        User targetUser = null;
+        for (User u : users) {
+            if (u.getId() == userId) {
+                targetUser = u;
+                break;
+            }
+        }
+        if (targetUser == null) return result;
+        String targetGender = targetUser.getGender();
+
+        // 2️⃣ Tìm bộ phim được userId đánh giá mới nhất (rating >= input)
+        Rating latest = null;
+        for (Rating r : ratings) {
+            if (r.getUserID() == userId && r.getRating() >= rating) {
+                if (latest == null || r.getTimestamps() > latest.getTimestamps()) {
+                    latest = r;
+                }
+            }
+        }
+        if (latest == null) return result;
+
+        // 3️⃣ Lấy danh sách thể loại của bộ phim mới nhất
+        Movie latestMovie = null;
+        for (Movie m : movies) {
+            if (m.getId() == latest.getMovieId()) {
+                latestMovie = m;
+                break;
+            }
+        }
+        if (latestMovie == null) return result;
+        ArrayList<String> latestGenres = latestMovie.getGenres();
+
+        // 4️⃣ Tìm tất cả người dùng cùng giới tính
+        HashSet<Integer> sameGenderUsers = new HashSet<>();
+        for (User u : users) {
+            if (u.getGender().equalsIgnoreCase(targetGender)) {
+                sameGenderUsers.add(u.getId());
+            }
+        }
+
+        // 5️⃣ Tìm các phim được những người đó đánh giá >= rating
+        HashSet<Integer> matchedMovieIds = new HashSet<>();
+        for (Rating r : ratings) {
+            if (sameGenderUsers.contains(r.getUserID()) && r.getRating() >= rating) {
+                // 6️⃣ Kiểm tra thể loại có trùng với phim mới nhất
+                for (Movie m : movies) {
+                    if (m.getId() == r.getMovieId()) {
+                        for (String g : m.getGenres()) {
+                            if (latestGenres.contains(g)) {
+                                matchedMovieIds.add(m.getId());
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
+        // 7️⃣ Lấy tên phim, sắp xếp alphabet, giới hạn k
+        ArrayList<String> names = new ArrayList<>();
+        for (Movie m : movies) {
+            if (matchedMovieIds.contains(m.getId())) {
+                names.add(m.getName());
+            }
+        }
+        Collections.sort(names);
+        for (int i = 0; i < Math.min(k, names.size()); i++) {
+            result.add(names.get(i));
+        }
+
+        return result;
+}
 }
