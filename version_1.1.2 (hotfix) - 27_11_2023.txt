@@ -1,0 +1,13 @@
+Phiên bản mới nhất:
+1.1.2 - 27/11/2023 (Sửa lỗi nhỏ)
+- Cập nhật kết quả của Req4.txt dòng 648 để khớp với kết quả của file movies.txt đã chỉnh sửa ở phiên bản 1.1.1.
+- Điều chỉnh tên tham số từ moveId thành movieId ở phương thức findUsersHavingSameRatingWithUser(int userId, int movieId) trong file RatingManagement.java để khớp với Yêu cầu 3 của đề.
+
+Các phiên bản cũ:
+1.1.1 - 22/12/2023 (Sửa lỗi nhỏ)
+- Cập nhật file movies.csv, sửa lỗi ký tự đặc biệt khiến Scanner chỉ đọc được đến dòng 629.
+1.1 - 22/12/2023
+- Cập nhật sơ đồ lớp Rating cho phù hợp với đề.
+- Bổ sung đề phần thư viện: "Ngoài những thư viện có sẵn trong các file nhận được, sinh viên được phép sử dụng các lớp trong package java.util và các lớp dùng cho nhu cầu đọc file trong package java.io".
+- Cập nhật file Main.java phần switch ... case ... cho phù hợp với đề.
+1.0 - 21/11/2023 - Đề phiên bản đầu tiên.
